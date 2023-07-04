@@ -4,12 +4,12 @@ export interface CabinForm {
   regularPrice: number;
   discount: number;
   description: string;
+  image?: any;
 }
 
 export interface Cabin extends CabinForm {
   created_at?: string;
   id: number;
-  image?: string;
 }
 
 export interface IApiError {
@@ -21,4 +21,11 @@ export interface IApiError {
 export interface ButtonProps {
   variation?: "primary" | "secondary" | "danger";
   size?: "small" | "medium" | "large";
+}
+
+export interface FormRowProps {
+  label?: string;
+  error?: string;
+  disabled?: boolean;
+  children: any;
 }
