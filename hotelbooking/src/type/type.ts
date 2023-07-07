@@ -9,7 +9,7 @@ export interface CabinForm {
 
 export interface Cabin extends CabinForm {
   created_at?: string;
-  id: number;
+  id?: number;
 }
 
 export interface IApiError {
