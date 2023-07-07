@@ -1,4 +1,5 @@
-import { CabinForm } from "../type/type";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import { Cabin, CabinForm } from "../type/type";
 import supabase, { supabaseUrl } from "./supabase";
 
 export async function getCabins() {
@@ -29,7 +30,9 @@ export async function createCabin(newCabin: CabinForm) {
   const { data, error } = await supabase
     .from("cabins")
     .insert([{ ...newCabin, image: imagePath }])
-    .select();
+    .select()
+    .returns<Cabin>();
+
   if (error) {
     console.error(error);
     throw new Error("Cabins could not be created");
