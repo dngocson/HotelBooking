@@ -9,6 +9,8 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
+import { useCreateCabin } from "./useCreateCabin";
+import { useEditCabin } from "./useEditCabin";
 
 ////////Initial Edit Value
 const initialEditFormValue: Cabin = {
@@ -25,7 +27,7 @@ function CreateCabinForm({
   cabinToEdit: Cabin;
 }) {
   const { id: editId, ...editValue } = cabinToEdit;
-  const isEditSession = Boolean(editId !== 0);
+  const isEditSession = Boolean(editId);
 
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, getValues, formState } =
@@ -33,31 +35,12 @@ function CreateCabinForm({
       defaultValues: isEditSession ? editValue : initialEditFormValue,
     });
   const { errors } = formState;
+
   // Create Cabin
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: (newcabin: CabinForm) => createEditCabin(newcabin),
-    onSuccess: () => {
-      toast.success("New Cabin created");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-      reset();
-    },
-    onError: (err: IApiError) => toast.error(err.message),
-  });
+  const { isCreating, createCabin } = useCreateCabin();
+
   // Edit Cabin
-  const { mutate: editCabin, isLoading: isEditing } = useMutation({
-    // mutationFn: (newcabin: CabinForm) => createEditCabin(newcabin),
-    mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
-    onSuccess: () => {
-      toast.success("Cabin successfully edited");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-      reset();
-    },
-    onError: (err: IApiError) => toast.error(err.message),
-  });
+  const { editCabin, isEditing } = useEditCabin();
 
   const isWorking = isCreating || isEditing;
 
@@ -67,8 +50,19 @@ function CreateCabinForm({
     if (!data.image) return;
 
     if (isEditSession)
-      editCabin({ newCabinData: { ...data, image }, id: editId });
-    else createCabin({ ...data, image: image });
+      editCabin(
+        { newCabinData: { ...data, image }, id: editId },
+        {
+          onSuccess: () => reset(),
+        }
+      );
+    else
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: () => reset(),
+        }
+      );
   };
   const onError: SubmitErrorHandler<CabinForm> = () =>
     toast.error("Cannot submit form");
@@ -149,7 +143,6 @@ function CreateCabinForm({
       <FormRow
         label="Description for website"
         error={errors?.description?.message}
-        disabled={isWorking}
       >
         <Textarea
           id="description"
