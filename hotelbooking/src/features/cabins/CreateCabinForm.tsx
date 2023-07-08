@@ -1,8 +1,6 @@
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
-import { Cabin, CabinForm, IApiError } from "../../type/type";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Cabin, CabinForm } from "../../type/type";
 import { toast } from "react-hot-toast";
-import { createEditCabin } from "../../services/apiCabins";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
@@ -29,7 +27,6 @@ function CreateCabinForm({
   const { id: editId, ...editValue } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
-  const queryClient = useQueryClient();
   const { register, handleSubmit, reset, getValues, formState } =
     useForm<CabinForm>({
       defaultValues: isEditSession ? editValue : initialEditFormValue,
@@ -45,7 +42,6 @@ function CreateCabinForm({
   const isWorking = isCreating || isEditing;
 
   const onSubmit: SubmitHandler<CabinForm> = (data) => {
-    console.log("data", data);
     const image = typeof data.image === "string" ? data.image : data.image[0];
     if (!data.image) return;
 
