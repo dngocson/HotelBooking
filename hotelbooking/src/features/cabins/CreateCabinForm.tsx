@@ -21,8 +21,10 @@ const initialEditFormValue: Cabin = {
 
 function CreateCabinForm({
   cabinToEdit = initialEditFormValue,
+  onCloseModal,
 }: {
-  cabinToEdit: Cabin;
+  cabinToEdit?: Cabin;
+  onCloseModal?: () => void;
 }) {
   const { id: editId, ...editValue } = cabinToEdit;
   const isEditSession = Boolean(editId);
@@ -49,14 +51,20 @@ function CreateCabinForm({
       editCabin(
         { newCabinData: { ...data, image }, id: editId },
         {
-          onSuccess: () => reset(),
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
         }
       );
     else
       createCabin(
         { ...data, image: image },
         {
-          onSuccess: () => reset(),
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
         }
       );
   };
@@ -162,7 +170,11 @@ function CreateCabinForm({
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          onClick={() => onCloseModal?.()}
+          variation="secondary"
+          type="reset"
+        >
           Cancel
         </Button>
         <Button disabled={isWorking}>
