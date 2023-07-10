@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import {
-  ReactElement,
-  useContext,
-  createContext,
-  JSXElementConstructor,
-} from "react";
+import { ReactElement, useContext, createContext } from "react";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -102,7 +97,14 @@ function Row({ children }: { children: React.ReactNode }) {
     </StyledRow>
   );
 }
-function Body({ children }: { children: React.ReactNode }) {}
+interface TableBodyProps<T> {
+  data?: T[];
+  render: (item: T) => React.ReactNode;
+}
+function Body<T>({ data, render }: TableBodyProps<T>) {
+  if (!data?.length) return <Empty />;
+  return <StyledBody>{data.map(render)}</StyledBody>;
+}
 
 Table.Header = Header;
 Table.Row = Row;
