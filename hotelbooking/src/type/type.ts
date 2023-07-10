@@ -18,11 +18,6 @@ export interface IApiError {
   statusCode: string | number;
 }
 
-export interface ButtonProps {
-  variation?: "primary" | "secondary" | "danger";
-  size?: "small" | "medium" | "large";
-}
-
 export interface FormRowProps {
   label?: string;
   error?: string;

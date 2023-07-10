@@ -71,7 +71,10 @@ function CreateCabinForm({
   const onError: SubmitErrorHandler<CabinForm> = () =>
     toast.error("Cannot submit form");
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      type={onCloseModal ? "model" : "regular"}
+      onSubmit={handleSubmit(onSubmit, onError)}
+    >
       <FormRow
         disabled={isWorking}
         label="Cabin name"

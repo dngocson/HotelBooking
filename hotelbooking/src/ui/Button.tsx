@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { ButtonProps } from "../type/type";
 
 const sizes = {
   small: css`
@@ -49,13 +48,18 @@ const variations = {
   `,
 };
 
+interface ButtonProps {
+  size?: keyof typeof sizes;
+  variation?: keyof typeof variations;
+}
+
 const Button = styled.button<ButtonProps>`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 
-  ${(props) => sizes[props.size ?? "medium"]}
   ${(props) => variations[props.variation ?? "primary"]}
+  ${(props) => sizes[props.size ?? "medium"]}
 `;
 
 export default Button;
