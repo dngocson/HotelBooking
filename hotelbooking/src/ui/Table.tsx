@@ -102,7 +102,7 @@ interface TableBodyProps<T> {
   render: (item: T) => React.ReactNode;
 }
 function Body<T>({ data, render }: TableBodyProps<T>) {
-  if (!data?.length) return <Empty />;
+  if (!data?.length) return <Empty>No data found</Empty>;
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
