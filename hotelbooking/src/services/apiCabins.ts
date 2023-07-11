@@ -45,6 +45,7 @@ export async function createEditCabin(newCabin: CabinForm, id?: number) {
       .select();
 
   const { data, error } = await query.select().returns<Cabin>();
+  console.log(data);
   if (error) {
     console.error(error);
     throw new Error("Cabins could not be created");
