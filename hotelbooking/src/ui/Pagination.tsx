@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Button from "./Button";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
+import { PAGE_SIZE } from "../utils/const";
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -25,7 +25,7 @@ const Buttons = styled.div`
 `;
 
 interface PaginationButtonProps {
-  active: string;
+  active: boolean;
 }
 const PaginationButton = styled.button<PaginationButtonProps>`
   background-color: ${(props) =>
@@ -61,28 +61,40 @@ const PaginationButton = styled.button<PaginationButtonProps>`
     color: var(--color-brand-50);
   }
 `;
-
-const PAGE_SIZE = 10;
-
+// Define a Pagination component that takes in a count prop
 const Pagination = ({ count }: { count: number }) => {
+  // Use the useSearchParams hook to get and set the search parameters
   const [searchParams, setSearchParams] = useSearchParams();
+  // Get the current page from the search parameters or default to 1
   const currentPage = !searchParams.get("page")
     ? 1
     : Number(searchParams.get("page"));
 
+  // Calculate the total number of pages based on the count and PAGE_SIZE
   const pageCount = Math.ceil(count / PAGE_SIZE);
+
+  // Define a function to go to the next page
   function nextPage() {
+    // Calculate the next page number, making sure not to go past the last page
     const next = currentPage === pageCount ? currentPage : currentPage + 1;
+    // Update the search parameters with the new page number
     searchParams.set("page", next.toString());
     setSearchParams(searchParams);
   }
+
+  // Define a function to go to the previous page
   function prevPage() {
+    // Calculate the previous page number, making sure not to go before the first page
     const prev = currentPage === 1 ? currentPage : currentPage - 1;
+    // Update the search parameters with the new page number
     searchParams.set("page", prev.toString());
     setSearchParams(searchParams);
   }
 
+  // If there is only one page or less, don't render anything
   if (pageCount <= 1) return null;
+
+  // Render the pagination component
   return (
     <StyledPagination>
       <P>
@@ -93,12 +105,17 @@ const Pagination = ({ count }: { count: number }) => {
         of <span>{count}</span> result
       </P>
       <Buttons>
-        <PaginationButton disabled={currentPage === 1} onClick={prevPage}>
+        <PaginationButton
+          active={currentPage !== 1}
+          disabled={currentPage === 1}
+          onClick={prevPage}
+        >
           <HiChevronLeft />
           <span>Previous</span>
         </PaginationButton>
 
         <PaginationButton
+          active={currentPage !== pageCount}
           disabled={currentPage === pageCount}
           onClick={nextPage}
         >
@@ -110,4 +127,5 @@ const Pagination = ({ count }: { count: number }) => {
   );
 };
 
+// Export the Pagination component as default
 export default Pagination;
