@@ -25,12 +25,12 @@ const Buttons = styled.div`
 `;
 
 interface PaginationButtonProps {
-  active: boolean;
+  $active: number;
 }
 const PaginationButton = styled.button<PaginationButtonProps>`
   background-color: ${(props) =>
-    props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
-  color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
+    props.$active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
+  color: ${(props) => (props.$active ? " var(--color-brand-50)" : "inherit")};
   border: none;
   border-radius: var(--border-radius-sm);
   font-weight: 500;
@@ -106,7 +106,7 @@ const Pagination = ({ count }: { count: number }) => {
       </P>
       <Buttons>
         <PaginationButton
-          active={currentPage !== 1}
+          $active={currentPage !== 1 ? 1 : 0}
           disabled={currentPage === 1}
           onClick={prevPage}
         >
@@ -115,7 +115,7 @@ const Pagination = ({ count }: { count: number }) => {
         </PaginationButton>
 
         <PaginationButton
-          active={currentPage !== pageCount}
+          $active={currentPage !== pageCount ? 1 : 0}
           disabled={currentPage === pageCount}
           onClick={nextPage}
         >
