@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import React, { ChangeEvent } from "react";
 const StyledCheckbox = styled.div`
   display: flex;
   gap: 1.6rem;
@@ -25,7 +25,20 @@ const StyledCheckbox = styled.div`
   }
 `;
 
-function Checkbox({ checked, onChange, disabled = false, id, children }) {
+interface CheckboxProps {
+  checked: boolean;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  id: string;
+  children: React.ReactNode;
+}
+function Checkbox({
+  checked,
+  onChange,
+  disabled = false,
+  id,
+  children,
+}: CheckboxProps) {
   return (
     <StyledCheckbox>
       <input
