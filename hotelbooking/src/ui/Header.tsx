@@ -1,13 +1,17 @@
-import React from "react";
 import { styled } from "styled-components";
+import Logout from "../features/authentication/Logout";
 
 const StyleHeader = styled.header`
-  background-color: orangered;
+  background-color: var(--color-grey-0);
   padding: 1.2rem 4.8rem;
   border-bottom: 1px solid var(--color-grey-100);
 `;
 const Header = () => {
-  return <StyleHeader>Header</StyleHeader>;
+  return (
+    <StyleHeader>
+      <Logout />
+    </StyleHeader>
+  );
 };
 
 export default Header;

@@ -1,27 +1,67 @@
+import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
+import { SignupProps } from "../../type/type";
 
 // Email regex: /\S+@\S+\.\S+/
 
 function SignupForm() {
+  const { register, formState, getValues } = useForm<SignupProps>({
+    defaultValues: { fullName: "" },
+  });
+  const { errors } = formState;
   return (
     <Form>
       <FormRow label="Full name" error={""}>
-        <Input type="text" id="fullName" />
+        <Input
+          type="text"
+          id="fullName"
+          {...register("fullName", {
+            required: "This field is required",
+          })}
+        />
       </FormRow>
 
       <FormRow label="Email address" error={""}>
-        <Input type="email" id="email" />
+        <Input
+          type="email"
+          id="email"
+          {...register("email", {
+            required: "This field is required",
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Please provied a valid email",
+            },
+          })}
+        />
       </FormRow>
 
       <FormRow label="Password (min 8 characters)" error={""}>
-        <Input type="password" id="password" />
+        <Input
+          type="password"
+          id="password"
+          {...register("password", {
+            required: "This field is required",
+            minLength: {
+              value: 8,
+              message: "Password needs a minimum of 8 charaters ",
+            },
+          })}
+        />
       </FormRow>
 
       <FormRow label="Repeat password" error={""}>
-        <Input type="password" id="passwordConfirm" />
+        <Input
+          type="password"
+          id="passwordConfirm"
+          {...register("passwordConfirm", {
+            required: "This field is required",
+            validate: (value) =>
+              value === getValues().password || "Password needs to match",
+          })}
+        />
       </FormRow>
 
       <FormRow>

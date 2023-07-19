@@ -9,7 +9,7 @@ export interface CabinForm {
 
 export interface Cabin extends CabinForm {
   created_at?: string;
-  id?: number;
+  id?: number | undefined;
 }
 
 export interface IApiError {
@@ -23,4 +23,11 @@ export interface FormRowProps {
   error?: string;
   disabled?: boolean;
   children: any;
+}
+
+export interface SignupProps {
+  fullName: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
 }
