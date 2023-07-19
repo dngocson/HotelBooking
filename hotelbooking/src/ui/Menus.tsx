@@ -35,7 +35,7 @@ const StyledToggle = styled.button`
 `;
 
 interface PositionProps {
-  position: { x: number; y: number };
+  $position: { x: number; y: number };
 }
 const StyledList = styled.ul<PositionProps>`
   position: fixed;
@@ -44,8 +44,8 @@ const StyledList = styled.ul<PositionProps>`
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 
-  right: ${(props) => props.position.x}px;
-  top: ${(props) => props.position.y}px;
+  right: ${(props) => props.$position.x}px;
+  top: ${(props) => props.$position.y}px;
 `;
 
 const StyledButton = styled.button`
@@ -128,7 +128,7 @@ function List({ id, children }: { id: number; children: React.ReactNode }) {
   const ref = useOutsideClick(close);
   if (openId !== id) return null;
   return createPortal(
-    <StyledList ref={ref} position={position}>
+    <StyledList ref={ref} $position={position}>
       {children}
     </StyledList>,
     document.body
@@ -137,10 +137,12 @@ function List({ id, children }: { id: number; children: React.ReactNode }) {
 function Button({
   children,
   icon,
+  disabled,
   onClick,
 }: {
   children: React.ReactNode;
   icon: React.ReactElement;
+  disabled?: boolean;
   onClick?: () => void;
 }) {
   const { close } = useContext(MenuContext);
@@ -150,7 +152,7 @@ function Button({
   }
   return (
     <li>
-      <StyledButton onClick={HandleClick}>
+      <StyledButton disabled={disabled} onClick={HandleClick}>
         {icon} <span>{children}</span>
       </StyledButton>
     </li>

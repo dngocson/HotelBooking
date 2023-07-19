@@ -51,6 +51,7 @@ function Filter({
   const currentFilter =
     searchParams.get(filterField) || (options && options[0].value);
   function handleClick(value: string) {
+    if (searchParams.get("page")) searchParams.set("page", "1");
     searchParams.set(filterField, value);
     setSearchParams(searchParams);
   }

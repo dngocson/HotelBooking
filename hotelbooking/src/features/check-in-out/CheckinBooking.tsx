@@ -14,6 +14,10 @@ import Checkbox from "../../ui/Checkbox";
 import { formatCurrency } from "../../utils/helpers";
 import { useCheckin } from "./useCheckin";
 import { useSettings } from "../settings/useSettings";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useDeleteBooking } from "../bookings/useDeleteBooking";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
   /* Box */
@@ -24,16 +28,17 @@ const Box = styled.div`
 `;
 
 function CheckinBooking() {
+  const navigate = useNavigate();
   const [confirmedPaid, setConfirmPaid] = useState<boolean>(false);
   const [addBreakfast, setAddBreakfast] = useState<boolean>(false);
   const { booking, isLoading } = useBooking();
   useEffect(() => setConfirmPaid(booking?.isPaid ?? false), [booking]);
   const moveBack = useMoveBack();
-
+  const { deleteBooking, isDeleting } = useDeleteBooking();
   const { checkin, isCheckingIn } = useCheckin();
 
   const { settings, isLoading: isLoadingSettings } = useSettings();
-  if (isLoading) return <Spinner />;
+  if (isLoading || isCheckingIn || isLoadingSettings) return <Spinner />;
 
   const {
     id: bookingId,
@@ -48,7 +53,16 @@ function CheckinBooking() {
     settings.breakfastPrice * numNights * numGuests;
   function handleCheckin() {
     if (!confirmedPaid) return;
-    checkin(bookingId);
+    if (addBreakfast) {
+      checkin({
+        bookingId,
+        breakfast: {
+          hasBreakfast: true,
+          extrasPrice: optionalBreakfastPrice,
+          totalPrice: totalPrice + optionalBreakfastPrice,
+        },
+      });
+    } else checkin({ bookingId, breakfast: {} });
   }
 
   return (
@@ -82,7 +96,9 @@ function CheckinBooking() {
           onChange={() => setConfirmPaid((confirmed) => !confirmed)}
         >
           I confirm that {guests.fullName} has paid the total amount of{" "}
-          {formatCurrency(totalPrice)}
+          {!addBreakfast
+            ? formatCurrency(totalPrice)
+            : `${formatCurrency(totalPrice + optionalBreakfastPrice)}`}
         </Checkbox>
       </Box>
 
@@ -93,6 +109,24 @@ function CheckinBooking() {
         >
           Check in booking #{bookingId}
         </Button>
+        <Modal>
+          <Modal.Open opens="delete">
+            <Button $variation="danger">Delete Booking</Button>
+          </Modal.Open>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="booking"
+              onConfirm={() => {
+                deleteBooking(Number(bookingId), {
+                  onSettled: () => {
+                    navigate(-1);
+                  },
+                });
+              }}
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Modal>
         <Button $variation="secondary" onClick={moveBack}>
           Back
         </Button>
