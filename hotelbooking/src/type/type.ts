@@ -20,7 +20,7 @@ export interface IApiError {
 
 export interface FormRowProps {
   label?: string;
-  error?: string;
+  error?: any;
   disabled?: boolean;
   children: any;
 }

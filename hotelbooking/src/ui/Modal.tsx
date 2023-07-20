@@ -70,8 +70,8 @@ interface ModalContextType {
 // Create a context object for the modal
 const ModalContext = createContext<ModalContextType>({
   openName: "",
-  close: () => {},
-  open: () => {},
+  close: () => undefined,
+  open: () => undefined,
 });
 
 interface ModalProps {

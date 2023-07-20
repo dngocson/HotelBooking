@@ -83,10 +83,10 @@ interface MenuContextType {
 
 const MenuContext = createContext<MenuContextType>({
   openId: 0,
-  close: () => {},
-  open: () => {},
   position: { x: 0, y: 0 },
-  setPosition: () => {},
+  close: () => undefined,
+  open: () => undefined,
+  setPosition: () => undefined,
 });
 
 const Menus = ({ children }: { children: React.ReactNode }) => {
