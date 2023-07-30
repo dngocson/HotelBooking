@@ -139,7 +139,9 @@ function Uploader() {
       }}
     >
       <h3>SAMPLE DATA</h3>
-
+      <a target="blank" href="https://zalo.me/0942885082" className="">
+        Zalo
+      </a>
       <Button onClick={uploadAll} disabled={isLoading}>
         Upload ALL
       </Button>
