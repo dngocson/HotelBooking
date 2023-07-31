@@ -50,7 +50,7 @@ const Amount = styled.div`
 interface Booking {
   id: string;
   created_at: Date;
-  startDate: Date;
+  startDate: any;
   endDate: Date;
   numNights: number;
   numGuests: number;

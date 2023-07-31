@@ -20,7 +20,15 @@ const Label = styled.span`
   }
 `;
 
-function DataItem({ icon, label, children }) {
+function DataItem({
+  icon,
+  label,
+  children,
+}: {
+  icon: any;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <StyledDataItem>
       <Label>

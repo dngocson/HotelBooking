@@ -104,8 +104,8 @@ const Footer = styled.footer`
 // A purely presentational component
 interface BookingDataBoxProps {
   created_at: string;
-  startDate: string;
-  endDate: Date;
+  startDate: any;
+  endDate: any;
   numNights: number;
   numGuests: number;
   cabinPrice: number;
