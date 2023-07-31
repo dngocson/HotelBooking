@@ -7,8 +7,8 @@ import { useLogin } from "./useLogin";
 import SpinnerMini from "../../ui/SpinnerMini";
 
 function LoginForm() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("phuong@gmail.com");
+  const [password, setPassword] = useState<string>("123123123");
   const { login, isLoading } = useLogin();
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
