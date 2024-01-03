@@ -8,7 +8,7 @@ export function useLogout() {
     mutationFn: logoutApi,
     onSuccess: () => {
       queryClient.removeQueries();
-      navigate("/login", { replace: true });
+      navigate("/user", { replace: true });
     },
   });
   return { logout, isLoading };

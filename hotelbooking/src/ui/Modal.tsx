@@ -6,6 +6,7 @@ import {
   useContext,
   cloneElement,
   ReactElement,
+  ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
@@ -75,7 +76,7 @@ const ModalContext = createContext<ModalContextType>({
 });
 
 interface ModalProps {
-  children: ReactElement | ReactElement[];
+  children: ReactNode;
 }
 
 // Define the Modal component
